@@ -1,107 +1,37 @@
 <!doctype html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#eaf5fb">
-<title>SC答案ノート</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#eaf5fb"><title>SC答案ノート</title>
 <style>
-:root{--blue:#dff1fb;--blue2:#b9def2;--ink:#24313b;--muted:#647481;--line:#d6e2e9;--paper:#fff;--bg:#f6fafc}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.55}
-header{padding:20px 16px 16px;background:linear-gradient(135deg,#eaf7ff,#d8edf9);border-bottom:1px solid var(--line)}
-h1{font-size:22px;margin:0 0 4px}header p{margin:0;color:#526775;font-size:13px}
-main{max-width:850px;margin:0 auto;padding:14px 12px 90px}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px #1d40500a}
-h2{font-size:16px;margin:0 0 12px}h3{font-size:14px;margin:15px 0 7px}
-.row{display:flex;gap:8px;flex-wrap:wrap}.field{flex:1;min-width:130px}label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px}
-input,select,textarea,button{font:inherit}input,select,textarea{width:100%;border:1px solid #cbd9e1;border-radius:10px;padding:10px;background:#fff;color:var(--ink)}textarea{min-height:105px;resize:vertical}
-button{border:0;border-radius:10px;padding:10px 13px;background:#d9edf9;color:#234355;font-weight:650;cursor:pointer}button.secondary{background:#f0f4f6;color:#3e505c;border:1px solid var(--line)}button.danger{background:#fff0f0;color:#8b3333}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.small{font-size:12px;color:var(--muted)}.count{font-size:12px;text-align:right;color:var(--muted);margin-top:3px}
-.question{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.question:first-of-type{border-top:0;padding-top:0;margin-top:0}
-.question-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.qtitle{font-weight:700;font-size:14px}.pill{font-size:11px;padding:3px 8px;border-radius:99px;background:#edf7fc;color:#426477;white-space:nowrap}
-.notice{padding:10px;border-radius:10px;background:#f2f8fb;font-size:12px;color:#506574}
-.answer-list{display:grid;gap:8px}.saved-item{border:1px solid var(--line);border-radius:11px;padding:10px}.saved-item strong{font-size:13px}.saved-item p{white-space:pre-wrap;margin:6px 0;font-size:13px}.saved-item .meta{font-size:11px;color:var(--muted)}
-footer{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center}
-footer button{flex:1;max-width:260px}
-.hidden{display:none!important}
-@media(min-width:650px){main{padding:22px 18px 100px}.panel{padding:18px}header{padding-left:max(18px,calc((100vw - 814px)/2))}}
-</style>
-</head>
-<body>
-<header><h1>SC答案ノート</h1><p>情報処理安全確保支援士試験｜答案入力・保存・振り返り</p></header>
-<main>
-<section class="panel">
-<h2>問題を選ぶ</h2>
-<div class="row">
-<div class="field"><label for="year">年度</label><select id="year">
-<option>令和7年度</option><option>令和6年度</option><option>令和5年度</option><option>令和4年度</option><option>令和3年度</option><option>令和2年度</option><option>令和元年度</option><option>平成31年度</option><option>平成30年度</option><option>平成29年度</option><option>平成28年度</option>
-</select></div>
-<div class="field"><label for="exam">試験区分</label><select id="exam"><option>科目B（午後）</option><option>科目A（午前II）</option></select></div>
-<div class="field"><label for="questionNo">問題</label><select id="questionNo"><option>問1</option><option>問2</option><option>問3</option><option>問4</option><option>問5</option><option>問6</option></select></div>
-</div>
-<p class="small">問題文や公式解答は自動取得しません。IPAの問題を見ながら、設問ごとに入力してください。</p>
-</section>
-
-<section class="panel">
-<h2>設問・答案入力</h2>
-<div class="field"><label for="topic">問題名・テーマ（任意）</label><input id="topic" placeholder="例：Webアプリケーションの脆弱性対策"></div>
-<div class="field" style="margin-top:10px"><label for="questionText">設問文（任意・貼り付け）</label><textarea id="questionText" placeholder="設問文や条件を貼り付ける"></textarea></div>
-<div id="answers"></div>
-<div class="actions"><button id="addAnswer">＋ 設問を追加</button><button id="save" >答案を保存</button></div>
-<p class="small">文字数は入力中に表示されます。文字数制限は設問ごとに設定できます。</p>
-</section>
-
-<section class="panel">
-<h2>AI採点用の資料</h2>
-<div class="field"><label for="officialAnswer">公式解答例（任意）</label><textarea id="officialAnswer" placeholder="IPAの解答例を貼り付ける"></textarea></div>
-<div class="field" style="margin-top:10px"><label for="rubric">採点講評・採点基準（任意）</label><textarea id="rubric" placeholder="採点講評、必須要素、配点など"></textarea></div>
-<div class="actions"><button id="copyPrompt">採点依頼文を作成・コピー</button><button class="secondary" id="openChatGPT">ChatGPTを開く</button></div>
-<p class="notice">この版ではAI採点を自動実行しません。答案と資料から採点依頼文を作成し、ChatGPTに貼り付けて採点します。APIキーをブラウザに置かない設計です。</p>
-</section>
-
-<section class="panel">
-<h2>保存した答案</h2>
-<div class="row"><div class="field"><label for="filterYear">年度で絞り込み</label><select id="filterYear"><option value="">すべて</option></select></div><div class="field"><label for="filterExam">試験区分</label><select id="filterExam"><option value="">すべて</option><option>科目B（午後）</option><option>科目A（午前II）</option></select></div></div>
-<div class="actions"><button class="secondary" id="export">バックアップを書き出す</button><button class="secondary" id="importBtn">バックアップを読み込む</button><input id="importFile" type="file" accept="application/json" class="hidden"></div>
-<div id="saved" class="answer-list" style="margin-top:12px"></div>
-<p class="small">保存先はこの端末のブラウザ（LocalStorage）です。ブラウザのデータ削除や端末変更に備え、定期的にバックアップしてください。</p>
-</section>
-</main>
+:root{--blue:#dff1fb;--blue2:#b9def2;--ink:#24313b;--muted:#647481;--line:#d6e2e9;--bg:#f6fafc}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.55}header{padding:20px 16px 16px;background:linear-gradient(135deg,#eaf7ff,#d8edf9);border-bottom:1px solid var(--line)}h1{font-size:22px;margin:0 0 4px}header p{margin:0;color:#526775;font-size:13px}main{max-width:850px;margin:0 auto;padding:14px 12px 90px}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px #1d40500a}h2{font-size:16px;margin:0 0 12px}.row{display:flex;gap:8px;flex-wrap:wrap}.field{flex:1;min-width:130px}label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;border:1px solid #cbd9e1;border-radius:10px;padding:10px;background:#fff;color:var(--ink)}textarea{min-height:105px;resize:vertical}button{border:0;border-radius:10px;padding:10px 13px;background:#d9edf9;color:#234355;font-weight:650;cursor:pointer}button.secondary{background:#f0f4f6;color:#3e505c;border:1px solid var(--line)}button.danger{background:#fff0f0;color:#8b3333}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.small{font-size:12px;color:var(--muted)}.question{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.question-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.qtitle{font-weight:700;font-size:14px}.count{font-size:12px;text-align:right;color:var(--muted);margin-top:3px}.notice{padding:10px;border-radius:10px;background:#f2f8fb;font-size:12px;color:#506574}.saved-item{border:1px solid var(--line);border-radius:11px;padding:10px}.saved-item strong{font-size:13px}.saved-item p{white-space:pre-wrap;margin:6px 0;font-size:13px}.saved-item .meta{font-size:11px;color:var(--muted)}.answer-list{display:grid;gap:8px}footer{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center}footer button{flex:1;max-width:260px}.hidden{display:none!important}@media(min-width:650px){main{padding:22px 18px 100px}.panel{padding:18px}}
+</style></head><body>
+<header><h1>SC答案ノート</h1><p>情報処理安全確保支援士試験｜午後・科目Bの記述答案に特化</p></header><main>
+<section class="panel"><h2>過去問を選ぶ</h2><div class="row">
+<div class="field"><label for="year">年度・実施回</label><select id="year">
+<option value="r7a">令和7年度 秋期</option><option value="r7h">令和7年度 春期</option><option value="r6a">令和6年度 秋期</option><option value="r6h">令和6年度 春期</option><option value="r5a">令和5年度 秋期</option><option value="r5h">令和5年度 春期</option><option value="r4a">令和4年度 秋期</option><option value="r4h">令和4年度 春期</option><option value="r3a">令和3年度 秋期</option><option value="r3h">令和3年度 春期</option><option value="r2a">令和2年度 秋期</option><option value="r2h">令和2年度 春期</option><option value="r1a">令和元年度 秋期</option><option value="r1h">令和元年度 春期</option><option value="h30a">平成30年度 秋期</option><option value="h30h">平成30年度 春期</option><option value="h29a">平成29年度 秋期</option><option value="h29h">平成29年度 春期</option><option value="h28a">平成28年度 秋期</option><option value="h28h">平成28年度 春期</option>
+</select></div><div class="field"><label for="section">試験区分</label><select id="section"></select></div><div class="field"><label for="questionNo">大問</label><select id="questionNo"></select></div></div>
+<p id="formatNote" class="notice"></p><p class="small">IPAの年度別問題冊子を見ながら入力します。年度によって問題構成が異なるため、選んだ年度に応じて大問の選択肢を切り替えます。</p></section>
+<section class="panel"><h2>答案入力</h2><div class="field"><label for="topic">問題テーマ（任意）</label><input id="topic" placeholder="例：SaaSのアクセス制御"></div><div class="field" style="margin-top:10px"><label for="questionText">設問文・条件（任意）</label><textarea id="questionText" placeholder="問題文や設問を貼り付ける"></textarea></div><div id="answers"></div><div class="actions"><button id="addAnswer">＋ 設問を追加</button><button id="save">答案を保存</button></div><p class="small">設問ごとに文字数上限を設定できます。文字数は入力中に表示されます。</p></section>
+<section class="panel"><h2>公式解答・採点講評</h2><div class="field"><label for="officialAnswer">IPA公式解答例（任意）</label><textarea id="officialAnswer" placeholder="公式解答例を貼り付ける"></textarea></div><div class="field" style="margin-top:10px"><label for="rubric">採点講評・配点・採点観点（任意）</label><textarea id="rubric" placeholder="採点講評や配点情報を貼り付ける"></textarea></div><div class="actions"><button id="copyPrompt">採点依頼文をコピー</button><button class="secondary" id="openChatGPT">ChatGPTを開く</button></div><p class="notice">この版はAI採点を自動実行しません。答案と公式資料をまとめた依頼文を作り、ChatGPTに貼り付けて採点します。IPA資料の自動取得と設問ごとの公式字数制限の自動入力は、まだ未実装です。</p></section>
+<section class="panel"><h2>保存した答案</h2><div class="row"><div class="field"><label for="filterYear">年度で絞り込み</label><select id="filterYear"><option value="">すべて</option></select></div><div class="field"><label for="filterSection">試験区分</label><select id="filterSection"><option value="">すべて</option><option>科目B（令和5年度秋期以降）</option><option>午後Ⅰ（令和5年度春期以前）</option><option>午後Ⅱ（令和5年度春期以前）</option></select></div></div><div class="actions"><button class="secondary" id="export">バックアップを書き出す</button><button class="secondary" id="importBtn">バックアップを読み込む</button><input id="importFile" type="file" accept="application/json" class="hidden"></div><div id="saved" class="answer-list" style="margin-top:12px"></div><p class="small">答案はこの端末のブラウザ内に保存されます。別端末との同期はありません。定期的にバックアップしてください。</p></section></main>
 <footer><button class="secondary" id="newEntry">新しい答案</button><button id="goSaved">保存一覧を見る</button></footer>
 <script>
-const $=id=>document.getElementById(id);
-const storeKey='sc-answer-notebook-v1';
-let answerCount=0, editingId=null;
-function makeAnswer(text='',limit=0){
-  const id=++answerCount, wrap=document.createElement('div');wrap.className='question';wrap.dataset.id=id;
-  wrap.innerHTML=`<div class="question-head"><div class="qtitle">設問 <span class="qnum">${id}</span></div><button class="secondary remove" type="button">削除</button></div>
-  <div class="row" style="margin-top:8px"><div class="field"><label>解答形式</label><select class="kind"><option>記述式</option><option>選択式</option><option>メモ</option></select></div><div class="field"><label>文字数上限（0＝設定なし）</label><input class="limit" type="number" min="0" value="${limit}"></div></div>
-  <label style="margin-top:8px">自分の答案</label><textarea class="answer" placeholder="答案を入力">${escapeHtml(text)}</textarea><div class="count">0文字</div>`;
-  const ta=wrap.querySelector('.answer'), count=wrap.querySelector('.count');
-  function update(){let n=[...ta.value].length;count.textContent=`${n}文字`+(+wrap.querySelector('.limit').value>0?` / ${wrap.querySelector('.limit').value}文字`:'');count.style.color=(+wrap.querySelector('.limit').value>0&&n>+wrap.querySelector('.limit').value)?'#b33333':'var(--muted)'}
-  ta.addEventListener('input',update);wrap.querySelector('.limit').addEventListener('input',update);
-  wrap.querySelector('.remove').addEventListener('click',()=>{wrap.remove();renumber()});update();$('answers').appendChild(wrap);renumber();
-}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const $=id=>document.getElementById(id), storeKey='sc-answer-notebook-v2';
+const integrated=['r7a','r7h','r6a','r6h','r5a']; let answerCount=0,editingId=null;
+const labels={r7a:'令和7年度 秋期',r7h:'令和7年度 春期',r6a:'令和6年度 秋期',r6h:'令和6年度 春期',r5a:'令和5年度 秋期',r5h:'令和5年度 春期',r4a:'令和4年度 秋期',r4h:'令和4年度 春期',r3a:'令和3年度 秋期',r3h:'令和3年度 春期',r2a:'令和2年度 秋期',r2h:'令和2年度 春期',r1a:'令和元年度 秋期',r1h:'令和元年度 春期',h30a:'平成30年度 秋期',h30h:'平成30年度 春期',h29a:'平成29年度 秋期',h29h:'平成29年度 春期',h28a:'平成28年度 秋期',h28h:'平成28年度 春期'};
+function isIntegrated(){return integrated.includes($('year').value)}
+function updateStructure(){const integratedNow=isIntegrated(),sec=$('section'),q=$('questionNo');sec.innerHTML='';if(integratedNow){sec.add(new Option('科目B（午後・統合形式）','科目B（令和5年度秋期以降）'));$('formatNote').textContent='この年度は午後の大問4問から2問を選択する形式です。大問は問1〜問4です。';q.innerHTML=[1,2,3,4].map(n=>`<option>問${n}</option>`).join('')}else{sec.add(new Option('午後Ⅰ','午後Ⅰ（令和5年度春期以前）'));sec.add(new Option('午後Ⅱ','午後Ⅱ（令和5年度春期以前）'));$('formatNote').textContent='この年度は旧形式です。午後Ⅰは問1〜問3、午後Ⅱは問1〜問2から問題を選びます。';updateOldQuestions()} }
+function updateOldQuestions(){const q=$('questionNo');q.innerHTML=($('section').value.startsWith('午後Ⅰ')?[1,2,3]:[1,2]).map(n=>`<option>問${n}</option>`).join('')}
+$('year').onchange=()=>{updateStructure();resetForm()};$('section').onchange=()=>{if(!isIntegrated())updateOldQuestions()};
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function makeAnswer(text='',limit=0){const id=++answerCount,w=document.createElement('div');w.className='question';w.innerHTML=`<div class="question-head"><div class="qtitle">設問 <span class="qnum">${id}</span></div><button class="secondary remove" type="button">削除</button></div><div class="row" style="margin-top:8px"><div class="field"><label>解答形式</label><select class="kind"><option>記述式</option><option>選択式</option><option>メモ</option></select></div><div class="field"><label>文字数上限（0＝設定なし）</label><input class="limit" type="number" min="0" value="${limit}"></div></div><label style="margin-top:8px">自分の答案</label><textarea class="answer" placeholder="答案を入力">${esc(text)}</textarea><div class="count">0文字</div>`;const ta=w.querySelector('.answer'),cnt=w.querySelector('.count');function update(){const n=[...ta.value].length,lim=+w.querySelector('.limit').value;cnt.textContent=`${n}文字`+(lim?` / ${lim}文字`:'');cnt.style.color=lim&&n>lim?'#b33333':'var(--muted)'}ta.oninput=update;w.querySelector('.limit').oninput=update;w.querySelector('.remove').onclick=()=>{w.remove();renumber()};$('answers').appendChild(w);update();renumber()}
 function renumber(){[...$('answers').children].forEach((el,i)=>el.querySelector('.qnum').textContent=i+1)}
-function getData(){return {id:editingId||String(Date.now()),updatedAt:new Date().toISOString(),year:$('year').value,exam:$('exam').value,questionNo:$('questionNo').value,topic:$('topic').value,questionText:$('questionText').value,officialAnswer:$('officialAnswer').value,rubric:$('rubric').value,answers:[...$('answers').children].map(el=>({kind:el.querySelector('.kind').value,limit:+el.querySelector('.limit').value||0,text:el.querySelector('.answer').value}))}}
-function loadAll(){try{return JSON.parse(localStorage.getItem(storeKey)||'[]')}catch(e){return []}}
-function saveAll(items){localStorage.setItem(storeKey,JSON.stringify(items))}
+function getData(){return{id:editingId||String(Date.now()),updatedAt:new Date().toISOString(),year:$('year').value,yearLabel:labels[$('year').value],exam:$('section').value,questionNo:$('questionNo').value,topic:$('topic').value,questionText:$('questionText').value,officialAnswer:$('officialAnswer').value,rubric:$('rubric').value,answers:[...$('answers').children].map(el=>({kind:el.querySelector('.kind').value,limit:+el.querySelector('.limit').value||0,text:el.querySelector('.answer').value}))}}
+function loadAll(){try{return JSON.parse(localStorage.getItem(storeKey)||'[]')}catch(e){return []}}function saveAll(a){localStorage.setItem(storeKey,JSON.stringify(a))}
 function resetForm(){editingId=null;$('topic').value='';$('questionText').value='';$('officialAnswer').value='';$('rubric').value='';$('answers').innerHTML='';answerCount=0;makeAnswer()}
-function fillFilters(){const sel=$('filterYear'),cur=sel.value;sel.innerHTML='<option value="">すべて</option>'+[...new Set(loadAll().map(x=>x.year))].map(y=>`<option>${escapeHtml(y)}</option>`).join('');sel.value=cur}
-function renderSaved(){fillFilters();const items=loadAll().filter(x=>(!$('filterYear').value||x.year===$('filterYear').value)&&(!$('filterExam').value||x.exam===$('filterExam').value)).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));$('saved').innerHTML='';
- if(!items.length){$('saved').innerHTML='<p class="small">保存した答案はまだありません。</p>';return}
- items.forEach(x=>{const d=document.createElement('div');d.className='saved-item';d.innerHTML=`<strong>${escapeHtml(x.year)}・${escapeHtml(x.exam)}・${escapeHtml(x.questionNo)}</strong><div class="meta">${new Date(x.updatedAt).toLocaleString('ja-JP')} ${x.topic?'｜'+escapeHtml(x.topic):''}</div><p>${escapeHtml((x.answers||[]).map((a,i)=>`設問${i+1}：${a.text}`).join('\\n')).slice(0,700)}</p><div class="actions"><button class="secondary edit">開く・編集</button><button class="secondary prompt">採点依頼文</button><button class="danger delete">削除</button></div>`;
- d.querySelector('.edit').onclick=()=>loadEntry(x.id);d.querySelector('.prompt').onclick=()=>{loadEntry(x.id);window.scrollTo({top:0,behavior:'smooth'});setTimeout(makePromptCopy,100)};d.querySelector('.delete').onclick=()=>{if(confirm('この答案を削除しますか？')){saveAll(loadAll().filter(y=>y.id!==x.id));renderSaved()}};$('saved').appendChild(d)})
-}
-function loadEntry(id){const x=loadAll().find(y=>y.id===id);if(!x)return;editingId=x.id;$('year').value=x.year;$('exam').value=x.exam;$('questionNo').value=x.questionNo;$('topic').value=x.topic||'';$('questionText').value=x.questionText||'';$('officialAnswer').value=x.officialAnswer||'';$('rubric').value=x.rubric||'';$('answers').innerHTML='';answerCount=0;(x.answers||[]).forEach(a=>{makeAnswer(a.text,a.limit);let el=$('answers').lastElementChild;el.querySelector('.kind').value=a.kind||'記述式'});if(!x.answers?.length)makeAnswer();window.scrollTo({top:0,behavior:'smooth'})}
-function makePrompt(){const x=getData();return `あなたは情報処理安全確保支援士試験の記述答案を採点する講師です。以下の設問・答案・参考資料を用いて、根拠を示しながら厳密に採点してください。\n\n【採点方針】\n- 設問の要求、条件、対象、因果関係を満たしているか確認する。\n- 必須要素ごとに評価し、部分点を認める。\n- 公式配点がない場合は推定配点と明記し、公式基準のように扱わない。\n- 不足要素、誤り、設問とのずれ、減点理由を具体的に示す。\n- 最後に改善答案を提示する。文字数制限がある場合は守る。\n- 根拠のない断定は避け、不明点は不明と記す。\n\n【年度】${x.year}\n【試験区分】${x.exam}\n【問題】${x.questionNo}\n【テーマ】${x.topic||'未入力'}\n【設問文】\n${x.questionText||'未入力'}\n\n【答案】\n${x.answers.map((a,i)=>`設問${i+1}（形式:${a.kind}、文字数上限:${a.limit||'なし'}）\n${a.text}`).join('\n\n')}\n\n【公式解答例】\n${x.officialAnswer||'未入力'}\n\n【採点講評・採点基準】\n${x.rubric||'未入力'}\n\n【出力形式】\n1. 総合評価（公式配点がない場合は推定と明記）\n2. 設問ごとの評価・得点見積もり\n3. 必須要素チェック表（要素／答案の該当箇所／評価／不足点）\n4. 減点理由と改善方法\n5. 改善答案\n6. 次回の復習ポイント`}
-async function makePromptCopy(){const p=makePrompt();try{await navigator.clipboard.writeText(p);alert('採点依頼文をコピーしました。ChatGPTに貼り付けてください。')}catch(e){prompt('この文章をコピーしてください',p)}}
-$('addAnswer').onclick=()=>makeAnswer();$('save').onclick=()=>{const x=getData();if(!x.answers.length){alert('設問を追加してください');return}const items=loadAll();const idx=items.findIndex(y=>y.id===x.id);if(idx>=0)items[idx]=x;else items.push(x);saveAll(items);editingId=x.id;renderSaved();alert('この端末に答案を保存しました。')};
-$('copyPrompt').onclick=makePromptCopy;$('openChatGPT').onclick=()=>window.open('https://chatgpt.com/','_blank','noopener');
-$('filterYear').onchange=renderSaved;$('filterExam').onchange=renderSaved;
-$('export').onclick=()=>{const blob=new Blob([JSON.stringify({app:'SC答案ノート',version:1,items:loadAll()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`SC答案ノート_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href)};
-$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const obj=JSON.parse(await f.text());const incoming=Array.isArray(obj)?obj:obj.items;if(!Array.isArray(incoming))throw Error('format');if(!confirm('現在の保存データを読み込んだデータで置き換えますか？'))return;saveAll(incoming);renderSaved();alert('読み込みました')}catch(err){alert('バックアップファイルを読み込めませんでした')}e.target.value=''};
-$('newEntry').onclick=()=>{resetForm();window.scrollTo({top:0,behavior:'smooth'})};$('goSaved').onclick=()=>$('saved').scrollIntoView({behavior:'smooth'});
-makeAnswer();renderSaved();
-</script>
-</body></html>
+function promptText(){const x=getData();return `あなたは情報処理安全確保支援士試験の記述答案を採点する講師です。設問の要求・条件・因果関係・対象を確認し、必須要素ごとに部分点を評価してください。公式配点がない場合は推定と明記し、公式基準のように扱わないでください。不足要素・誤り・設問とのずれ・減点理由を示し、文字数制限を守った改善答案を提示してください。\n\n【年度】${x.yearLabel}\n【試験区分】${x.exam}\n【大問】${x.questionNo}\n【テーマ】${x.topic||'未入力'}\n【設問文】\n${x.questionText||'未入力'}\n【自分の答案】\n${x.answers.map((a,i)=>`設問${i+1}（形式:${a.kind}、文字数上限:${a.limit||'未設定'}）\n${a.text}`).join('\n\n')}\n【IPA公式解答例】\n${x.officialAnswer||'未入力'}\n【採点講評・配点等】\n${x.rubric||'未入力'}\n\n【回答形式】総合評価／設問ごとの得点見積もり／必須要素チェック表／減点理由／改善答案／復習ポイント`}
+async function copyPrompt(){const p=promptText();try{await navigator.clipboard.writeText(p);alert('採点依頼文をコピーしました。ChatGPTに貼り付けてください。')}catch(e){prompt('この文章をコピーしてください',p)}}
+function renderSaved(){const all=loadAll(),f=$('filterYear'),old=f.value;f.innerHTML='<option value="">すべて</option>'+[...new Set(all.map(x=>x.yearLabel||labels[x.year]||x.year))].map(y=>`<option>${esc(y)}</option>`).join('');f.value=old;$('saved').innerHTML='';const items=all.filter(x=>(!f.value||(x.yearLabel||labels[x.year])===f.value)&&(!$('filterSection').value||x.exam===$('filterSection').value)).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));if(!items.length){$('saved').innerHTML='<p class="small">保存した答案はまだありません。</p>';return}items.forEach(x=>{const d=document.createElement('div');d.className='saved-item';d.innerHTML=`<strong>${esc(x.yearLabel||labels[x.year])}・${esc(x.exam)}・${esc(x.questionNo)}</strong><div class="meta">${new Date(x.updatedAt).toLocaleString('ja-JP')} ${x.topic?'｜'+esc(x.topic):''}</div><p>${esc((x.answers||[]).map((a,i)=>`設問${i+1}：${a.text}`).join('\n')).slice(0,700)}</p><div class="actions"><button class="secondary edit">開く・編集</button><button class="secondary prompt">採点依頼文</button><button class="danger del">削除</button></div>`;d.querySelector('.edit').onclick=()=>loadEntry(x.id);d.querySelector('.prompt').onclick=()=>{loadEntry(x.id);setTimeout(copyPrompt,100)};d.querySelector('.del').onclick=()=>{if(confirm('この答案を削除しますか？')){saveAll(loadAll().filter(y=>y.id!==x.id));renderSaved()}};$('saved').appendChild(d)})}
+function loadEntry(id){const x=loadAll().find(y=>y.id===id);if(!x)return;editingId=x.id;$('year').value=x.year;updateStructure();$('section').value=x.exam;$('questionNo').value=x.questionNo;if(!isIntegrated())updateOldQuestions();$('questionNo').value=x.questionNo;$('topic').value=x.topic||'';$('questionText').value=x.questionText||'';$('officialAnswer').value=x.officialAnswer||'';$('rubric').value=x.rubric||'';$('answers').innerHTML='';answerCount=0;(x.answers||[]).forEach(a=>{makeAnswer(a.text,a.limit);$('answers').lastElementChild.querySelector('.kind').value=a.kind||'記述式'});if(!x.answers?.length)makeAnswer();window.scrollTo({top:0,behavior:'smooth'})}
+$('addAnswer').onclick=()=>makeAnswer();$('save').onclick=()=>{const x=getData(),a=loadAll(),i=a.findIndex(y=>y.id===x.id);if(i>=0)a[i]=x;else a.push(x);saveAll(a);editingId=x.id;renderSaved();alert('この端末に答案を保存しました。')};$('copyPrompt').onclick=copyPrompt;$('openChatGPT').onclick=()=>window.open('https://chatgpt.com/','_blank','noopener');$('filterYear').onchange=renderSaved;$('filterSection').onchange=renderSaved;
+$('export').onclick=()=>{const b=new Blob([JSON.stringify({app:'SC答案ノート',version:2,items:loadAll()},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`SC答案ノート_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href)};$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text()),a=Array.isArray(o)?o:o.items;if(!Array.isArray(a))throw 0;if(confirm('現在の保存データを読み込んだデータで置き換えますか？')){saveAll(a);renderSaved();alert('読み込みました')}}catch(e){alert('バックアップを読み込めませんでした')}e.target.value=''};$('newEntry').onclick=()=>{resetForm();window.scrollTo({top:0,behavior:'smooth'})};$('goSaved').onclick=()=>$('saved').scrollIntoView({behavior:'smooth'});
+updateStructure();makeAnswer();renderSaved();
+</script></body></html>
